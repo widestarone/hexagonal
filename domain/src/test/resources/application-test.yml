@@ -1,0 +1,42 @@
+deploy.phase: test
+server:
+  port: 80
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: create
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        register-health-indicator: true
+        minimum-number-of-calls: 30 # 최소 호출
+        failure-rate-threshold: 50 # 실패 비율
+        slow-call-rate-threshold: 50 # slow call 비율
+        slow-call-duration-threshold: 1000 # slow call 임계치 1초
+        max-wait-duration-in-half-open-state: 1000
+        permitted-number-of-calls-in-half-open-state: 10 # half-open 상태일때 허용되는 호출 수
+        record-exceptions: java.io.IOException
+    instances:
+      default:
+        base-config: default
+jwt:
+  secret: 75b5a1c1f69a3e169c3581996ec5df9128769c811f374f2d4f07ecb31f9faefb9b5f28f40c241877cc28a3e055ac97683e9bcf5a64202d154e08b303b7ef3650
+  access-token-expire-time: 86400000  # 1일 (1000 * 60 * 60 * 24 * 1) 86400000
+  refresh-token-expire-time: 604800000  # 7일 (1000 * 60 * 60 * 24 * 7) 604800000
+springdoc:
+  api-docs:
+    enabled: off
+custom-jwt:
+  secret: 75b5a1c1f69a3e169c3581996ec5df9128769c811f374f2d4f07ecb31f9faefb9b5f28f40c241877cc28a3e055ac97683e9bcf5a64202d154e08b303b7ef3650
+

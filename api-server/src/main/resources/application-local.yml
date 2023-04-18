@@ -1,0 +1,90 @@
+deploy.phase: local
+server:
+  EXPOSE 8080
+spring:
+  application:
+    name: klone-studio-server
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${KLONE_STUDIO_DB_NAME}/hexagonal?useUnicode=yes&characterEncoding=UTF-8&connectTimeout=2000&autoReconnect=true&serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true&useSSL=false
+    username: ${DB_USER_NAME}
+    password: ${DB_USER_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    defer-datasource-initialization: true
+    open-in-view: false
+springdoc:
+  version: openapi_3_0
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+    doc-expansion: none
+  paths-to-match:
+    - /api/**
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+management.health.circuitbreakers.enabled: true
+management.health.ratelimiters.enabled: true
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        register-health-indicator: true
+        minimum-number-of-calls: 30 # 최소 호출
+        failure-rate-threshold: 50 # 실패 비율
+        slow-call-rate-threshold: 50 # slow call 비율
+        slow-call-duration-threshold: 10000 # slow call 임계치 10초
+        max-wait-duration-in-half-open-state: 1000 #
+        permitted-number-of-calls-in-half-open-state: 10 # half-open 상태일때 허용되는 호출 수
+        recordExceptions:
+          - org.springframework.web.client.HttpServerErrorException
+          - java.util.concurrent.TimeoutException
+          - java.io.IOException
+    instances:
+      default:
+        base-config: default
+      mp:
+        register-health-indicator: true
+        minimum-number-of-calls: 10 # 최소 호출
+        failure-rate-threshold: 50 # 실패 비율
+        slow-call-rate-threshold: 50 # slow call 비율
+        slow-call-duration-threshold: 60000 # slow call 임계치 60초
+        max-wait-duration-in-half-open-state: 1000 # half open 상태에서 open 상태로 전환되기 전 대기시간
+        permitted-number-of-calls-in-half-open-state: 10 # half-open 상태일때 허용되는 호출 수
+        recordExceptions:
+          - org.springframework.web.client.HttpServerErrorException
+          - java.util.concurrent.TimeoutException
+          - java.io.IOException
+  ratelimiter:
+    configs:
+      instances:
+        register-health-indicator: true
+
+custom-jwt:
+  secret: ${JWT_SECRET_KEY}
+logging:
+  level:
+    root: info
+    org.apache.kafka : error
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
