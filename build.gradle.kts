@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-    val springVersion = "2.7.5"
-    val kotlinVersion = "1.6.21"
+    val springVersion = "2.7.8"
+    val kotlinVersion = "1.9.21"
     val ktlintVersion = "11.2.0"
 
     id("org.springframework.boot") version springVersion apply false
@@ -21,12 +21,12 @@ plugins {
 allprojects {
     apply(plugin = "idea")
 
-    group = "com.klonesales"
-    version = "0.6.0-SNAPSHOT"
+    group = "com.hexagonal"
+    version = "0.1.0-SNAPSHOT"
 
     tasks.withType<JavaCompile> {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
+        sourceCompatibility = "1.8"
+        targetCompatibility = "1.8"
     }
 
     tasks.withType<KotlinCompile> {
@@ -35,7 +35,7 @@ allprojects {
                 "-Xjsr305=strict",
                 "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
             )
-            jvmTarget = "17"
+            jvmTarget = "1.8"
         }
     }
 
@@ -121,7 +121,7 @@ subprojects {
 
         // cache
         implementation("org.springframework.boot:spring-boot-starter-cache")
-        implementation("com.github.ben-manes.caffeine:caffeine:3.1.1")
+//        implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
 
         /**
          * aws cognito jwt 검증 구현을 위한 라이브러리

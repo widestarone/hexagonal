@@ -1,9 +1,6 @@
 package com.hexagonal.domain.user.application.port.out
 
-import com.hexagonal.domain.company.adapter.entity.CompanyEntity
-import com.hexagonal.domain.user.adapter.entity.SubscribePlanEntity
 import com.hexagonal.domain.user.adapter.entity.UserEntity
-import com.hexagonal.domain.user.domain.dto.CompanyUser
 import org.springframework.data.domain.Page
 
 interface UserPort {

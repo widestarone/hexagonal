@@ -1,28 +1,15 @@
 package com.hexagonal.domain.user.adapter
 
 import com.hexagonal.common.logging.Log
-import com.hexagonal.domain.company.adapter.entity.CompanyEntity
-import com.hexagonal.domain.company.adapter.repository.CompanyRepository
-import com.hexagonal.domain.user.adapter.entity.SubscribePlanEntity
 import com.hexagonal.domain.user.adapter.entity.UserEntity
-import com.hexagonal.domain.user.adapter.entity.WithdrawalReasonEntity
-import com.hexagonal.domain.user.adapter.repository.SubscribePlanRepository
 import com.hexagonal.domain.user.adapter.repository.UserRepository
 import com.hexagonal.domain.user.adapter.repository.UserRepositorySupport
-import com.hexagonal.domain.user.adapter.repository.WithdrawalReasonRepository
-import com.hexagonal.domain.user.application.port.out.SubscribeCountUpdateCommand
-import com.hexagonal.domain.user.application.port.out.SubscribePlanUpdateCommand
-import com.hexagonal.domain.user.application.port.out.UpdateDeviceEndpointCmd
 import com.hexagonal.domain.user.application.port.out.UserCreateCommand
 import com.hexagonal.domain.user.application.port.out.UserListCommand
 import com.hexagonal.domain.user.application.port.out.UserPasswordUpdateCommand
 import com.hexagonal.domain.user.application.port.out.UserPort
 import com.hexagonal.domain.user.application.port.out.UserStatusUpdateCommand
-import com.hexagonal.domain.user.application.port.out.UserSubscribeListCommand
 import com.hexagonal.domain.user.application.port.out.UserUpdateCommand
-import com.hexagonal.domain.user.application.port.out.WithdrawalReasonCreateCommand
-import com.hexagonal.domain.user.domain.dto.CompanyUser
-import com.hexagonal.domain.user.util.SubscribeDateUtil.plusMonth
 import org.springframework.data.domain.Page
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
@@ -31,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 class UserAdapter(
     private val userRepository: UserRepository,
-    private val companyRepository: CompanyRepository,
-    private val withdrawalReasonRepository: WithdrawalReasonRepository,
     private val userRepositorySupport: UserRepositorySupport,
-    private val subscribePlanRepository: SubscribePlanRepository,
 ) : UserPort, Log {
     @Transactional
     override fun save(command: UserCreateCommand): UserEntity? {

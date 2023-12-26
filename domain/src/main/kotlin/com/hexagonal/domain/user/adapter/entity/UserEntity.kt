@@ -2,32 +2,19 @@ package com.hexagonal.domain.user.adapter.entity
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.hexagonal.common.entity.BaseEntity
-import com.hexagonal.domain.common.constant.IndustryType
-import com.hexagonal.domain.company.adapter.entity.CompanyEntity
 import com.hexagonal.domain.user.application.port.out.UserUpdateCommand
-import com.hexagonal.domain.user.constant.GenderType
 import com.hexagonal.domain.user.constant.UserStatus
 import com.hexagonal.domain.user.constant.UserType
-import com.hexagonal.domain.user.domain.dto.CompanyUser
-import com.hexagonal.domain.user.domain.dto.StudioSimpleUser
-import com.hexagonal.domain.user.domain.dto.StudioUser
-import com.hexagonal.domain.user.domain.dto.SubscribePlan
-import com.hexagonal.domain.user.domain.dto.SubscribePlanAdminInfo
-import com.hexagonal.domain.user.domain.dto.UserAdminInfo
-import com.hexagonal.domain.user.domain.dto.UserSubscribeAdminInfo
+import com.hexagonal.domain.user.domain.dto.User
+import software.amazon.awssdk.services.rekognition.model.GenderType
 import java.time.LocalDateTime
-import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
-import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
-import javax.persistence.OneToOne
 import javax.persistence.Table
 
 @Entity
@@ -91,7 +78,7 @@ class UserEntity(
      * 성별
      */
     @Enumerated(EnumType.STRING)
-    val gender: GenderType = GenderType.NONE,
+    val gender: GenderType = GenderType.MALE,
 
     /**
      * 탈퇴 일자
@@ -123,20 +110,11 @@ class UserEntity(
         return deletedAt != null
     }
 
-    fun toStudioSimpleUser(): StudioSimpleUser = StudioSimpleUser(
+    fun toUser(): User = User(
         id = this.id ?: 0,
         userLastName = this.userLastName,
         userFirstName = this.userFirstName,
         phoneNumber = this.phoneNumber,
         email = this.email,
-    )
-
-    fun toStudioUser(): StudioUser = StudioUser(
-        id = this.id ?: 0,
-        userLastName = this.userLastName,
-        userFirstName = this.userFirstName,
-        phoneNumber = this.phoneNumber,
-        email = this.email,
-        language = this.language,
     )
 }

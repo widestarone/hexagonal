@@ -2,9 +2,9 @@ package com.hexagonal.common.resolver
 
 import com.hexagonal.common.exception.ErrorCode
 import com.hexagonal.common.exception.ServiceException
-import com.hexagonal.domain.user.domain.dto.StudioSimpleUser
 import com.hexagonal.common.annotation.LoginUser
 import com.hexagonal.common.interceptor.TokenVerifyInterceptor
+import com.hexagonal.domain.user.domain.dto.User
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.support.WebDataBinderFactory
@@ -34,9 +34,9 @@ class LoginStudioUserArgumentResolver : HandlerMethodArgumentResolver {
         mavContainer: ModelAndViewContainer?,
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?,
-    ): StudioSimpleUser {
+    ): User {
         return webRequest.getNativeRequest(HttpServletRequest::class.java)
-            ?.getAttribute(TokenVerifyInterceptor.profileKey) as StudioSimpleUser?
+            ?.getAttribute(TokenVerifyInterceptor.profileKey) as User?
             ?: throw ServiceException(ErrorCode.INVALID_TOKEN_ERROR)
     }
 }

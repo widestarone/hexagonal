@@ -1,6 +1,5 @@
 package com.hexagonal.common.auth.application.port.`in`
 
-import com.hexagonal.common.auth.application.port.out.CertificationCreateCommand
 import com.hexagonal.common.auth.constant.CertificationType
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.media.SchemaProperty
@@ -19,9 +18,9 @@ data class CertificationCommand(
     @SchemaProperty(schema = Schema(implementation = CertificationType::class))
     val certificationType: CertificationType,
 ) {
-    fun toCertificationCreatePort(code: String): CertificationCreateCommand = CertificationCreateCommand(
-        email = this.email,
-        certificationType = this.certificationType,
-        certificationCode = code,
-    )
+//    fun toCertificationCreatePort(code: String): CertificationCreateCommand = CertificationCreateCommand(
+//        email = this.email,
+//        certificationType = this.certificationType,
+//        certificationCode = code,
+//    )
 }

@@ -1,7 +1,6 @@
 package com.hexagonal.domain.user.application.port.out
 
 import com.hexagonal.common.constant.PageInfoConstant
-import com.hexagonal.domain.common.constant.IndustryType
 import com.hexagonal.domain.user.constant.UserSortType
 import com.hexagonal.domain.user.constant.UserStatus
 import java.time.LocalDateTime

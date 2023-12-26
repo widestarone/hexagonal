@@ -2,7 +2,6 @@ package com.hexagonal.domain.user.domain.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.hexagonal.common.annotation.Tel
-import com.hexagonal.domain.common.constant.IndustryType
 import io.swagger.v3.oas.annotations.media.Schema
 import javax.validation.constraints.Email
 

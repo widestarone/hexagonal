@@ -1,7 +1,5 @@
 package com.hexagonal.domain.user.application.port.out
 
-import com.hexagonal.domain.common.constant.IndustryType
-
 /**
  * 회원 수정 요청
  */

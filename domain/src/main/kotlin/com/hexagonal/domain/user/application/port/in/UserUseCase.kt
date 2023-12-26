@@ -10,13 +10,8 @@ import com.hexagonal.domain.user.domain.dto.UserLoginInfo
 import com.hexagonal.domain.user.domain.dto.UserSignUp
 
 interface UserUseCase {
-    fun signUpUser(request: StudioUserCommand): UserSignUp
-
-    fun findUser(userId: Long, currentUser: StudioSimpleUser): ApiResponse<User>
 
     fun checkAvailableUserEmail(request: UserEmailCommand): Boolean
-
-    fun updateUser(request: StudioUserModifyCommand, currentUser: StudioSimpleUser): ApiResponse<User>
 
     fun updateUserPassword(request: UserPasswordModifyCommand): UserPasswordUpdateResult
 

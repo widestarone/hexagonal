@@ -28,31 +28,31 @@ class TokenVerifyInterceptor(
      * 토큰 검증
      */
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-        val method = request.method
-        if (method.equals(HttpMethod.OPTIONS.name)) {
-            return true
-        }
-
-        try {
-            val token: String = tokenHttpRequestUtil.getToken(request)
-            val userId = tokenHttpRequestUtil.getUserId(token)
-            val user = userService.findStudioSimpleUser(userId)
-                ?: throw AuthenticationException(ErrorCode.INVALID_TOKEN_ERROR)
-
-            request.setAttribute(profileKey, user)
-            log.info("request userId: {}. token: {}", userId, token)
-        } catch (e: TokenExpiredException) {
-            log.warn("access token is expired. msg {}.", e.message)
-            throw AuthenticationException(ErrorCode.ACCESS_TOKEN_EXPIRED)
-        } catch (e: Exception) {
-            log.error(
-                "error occurs on verifying access token. request uri - {}, authorization header value - {} msg - {}",
-                request.requestURI,
-                request.getHeader("Authorization"),
-                e.message,
-            )
-            throw AuthenticationException(ErrorCode.INVALID_TOKEN_ERROR, e)
-        }
+//        val method = request.method
+//        if (method.equals(HttpMethod.OPTIONS.name)) {
+//            return true
+//        }
+//
+//        try {
+//            val token: String = tokenHttpRequestUtil.getToken(request)
+//            val userId = tokenHttpRequestUtil.getUserId(token)
+//            val user = userService.findUser(userId)
+//                ?: throw AuthenticationException(ErrorCode.INVALID_TOKEN_ERROR)
+//
+//            request.setAttribute(profileKey, user)
+//            log.info("request userId: {}. token: {}", userId, token)
+//        } catch (e: TokenExpiredException) {
+//            log.warn("access token is expired. msg {}.", e.message)
+//            throw AuthenticationException(ErrorCode.ACCESS_TOKEN_EXPIRED)
+//        } catch (e: Exception) {
+//            log.error(
+//                "error occurs on verifying access token. request uri - {}, authorization header value - {} msg - {}",
+//                request.requestURI,
+//                request.getHeader("Authorization"),
+//                e.message,
+//            )
+//            throw AuthenticationException(ErrorCode.INVALID_TOKEN_ERROR, e)
+//        }
         return true
     }
 }

@@ -2,7 +2,6 @@ package com.hexagonal.domain.user.application.port.`in`
 
 import com.hexagonal.common.annotation.Password
 import com.hexagonal.common.annotation.Tel
-import com.hexagonal.domain.common.constant.IndustryType
 import io.swagger.v3.oas.annotations.media.Schema
 import javax.validation.constraints.Email
 

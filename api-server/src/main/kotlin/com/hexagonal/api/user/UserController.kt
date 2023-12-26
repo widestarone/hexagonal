@@ -4,22 +4,17 @@ import com.hexagonal.common.auth.application.port.`in`.LoginCommand
 import com.hexagonal.common.auth.application.port.`in`.RefreshTokenCommand
 import com.hexagonal.common.auth.domain.dto.Token
 import com.hexagonal.common.exception.ServiceException
-import com.hexagonal.domain.user.application.port.`in`.StudioUserCommand
-import com.hexagonal.domain.user.application.port.`in`.StudioUserModifyCommand
 import com.hexagonal.domain.user.application.port.`in`.UserAutoLogInCommand
 import com.hexagonal.domain.user.application.port.`in`.UserEmailCommand
 import com.hexagonal.domain.user.application.port.`in`.UserPasswordModifyCommand
 import com.hexagonal.domain.user.application.port.`in`.UserUseCase
-import com.hexagonal.domain.user.application.port.`in`.WithdrawalCommand
 import com.hexagonal.domain.user.application.port.out.UserPasswordUpdateResult
-import com.hexagonal.domain.user.domain.dto.StudioSimpleUser
-import com.hexagonal.domain.user.domain.dto.StudioUser
 import com.hexagonal.domain.user.domain.dto.UserLoginInfo
 import com.hexagonal.domain.user.domain.dto.UserSignUp
-import com.hexagonal.domain.user.domain.dto.WithdrawalResult
 import com.hexagonal.common.annotation.LoginUser
 import com.hexagonal.common.annotation.SuccessApiResponse
 import com.hexagonal.common.response.ErrorResponse
+import com.hexagonal.domain.user.domain.dto.User
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -49,78 +44,78 @@ import javax.validation.Valid
 class UserController(
     private val userUseCase: UserUseCase,
 ) {
-    @Operation(summary = "회원 가입")
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "200",
-            ),
-            ApiResponse(
-                responseCode = "422",
-                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
-            ),
-            ApiResponse(
-                responseCode = "500",
-                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
-            ),
-        ],
-    )
-    @PostMapping("/user/signup")
-    fun signUp(@Valid @RequestBody request: StudioUserCommand): com.hexagonal.domain.common.dto.ApiResponse<UserSignUp> = try {
-        com.hexagonal.domain.common.dto.ApiResponse(
-            success = true,
-            data = userUseCase.signUpStudioUser(request),
-        )
-    } catch (e: ServiceException) {
-        com.hexagonal.domain.common.dto.ApiResponse(
-            errorCode = e.errorCode.code,
-            message = e.errorCode.message,
-        )
-    } catch (e: Exception) {
-        com.hexagonal.domain.common.dto.ApiResponse()
-    }
+//    @Operation(summary = "회원 가입")
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//            ),
+//            ApiResponse(
+//                responseCode = "422",
+//                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
+//            ),
+//            ApiResponse(
+//                responseCode = "500",
+//                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
+//            ),
+//        ],
+//    )
+//    @PostMapping("/user/signup")
+//    fun signUp(@Valid @RequestBody request: StudioUserCommand): com.hexagonal.domain.common.dto.ApiResponse<UserSignUp> = try {
+//        com.hexagonal.domain.common.dto.ApiResponse(
+//            success = true,
+//            data = userUseCase.signUpStudioUser(request),
+//        )
+//    } catch (e: ServiceException) {
+//        com.hexagonal.domain.common.dto.ApiResponse(
+//            errorCode = e.errorCode.code,
+//            message = e.errorCode.message,
+//        )
+//    } catch (e: Exception) {
+//        com.hexagonal.domain.common.dto.ApiResponse()
+//    }
 
-    @Operation(summary = "회원 조회")
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "200",
-            ),
-            ApiResponse(
-                responseCode = "422",
-                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
-            ),
-            ApiResponse(
-                responseCode = "500",
-                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
-            ),
-        ],
-    )
-    @GetMapping("/user/{id}")
-    fun findUser(@PathVariable id: Long, @LoginUser user: StudioSimpleUser): com.hexagonal.domain.common.dto.ApiResponse<StudioUser> {
-        return userUseCase.findStudioUser(id, user)
-    }
+//    @Operation(summary = "회원 조회")
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//            ),
+//            ApiResponse(
+//                responseCode = "422",
+//                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
+//            ),
+//            ApiResponse(
+//                responseCode = "500",
+//                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
+//            ),
+//        ],
+//    )
+//    @GetMapping("/user/{id}")
+//    fun findUser(@PathVariable id: Long, @LoginUser user: User): com.hexagonal.domain.common.dto.ApiResponse<User> {
+//        return userUseCase.findStudioUser(id, user)
+//    }
 
-    @Operation(summary = "Simple 회원 조회")
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "200",
-            ),
-            ApiResponse(
-                responseCode = "422",
-                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
-            ),
-            ApiResponse(
-                responseCode = "500",
-                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
-            ),
-        ],
-    )
-    @GetMapping("/user/simple/{id}")
-    fun findSimpleUser(@PathVariable id: Long, @LoginUser user: StudioSimpleUser): com.hexagonal.domain.common.dto.ApiResponse<StudioSimpleUser> {
-        return userUseCase.findStudioSimpleUser(id, user)
-    }
+//    @Operation(summary = "Simple 회원 조회")
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//            ),
+//            ApiResponse(
+//                responseCode = "422",
+//                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
+//            ),
+//            ApiResponse(
+//                responseCode = "500",
+//                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
+//            ),
+//        ],
+//    )
+//    @GetMapping("/user/simple/{id}")
+//    fun findSimpleUser(@PathVariable id: Long, @LoginUser user: StudioSimpleUser): com.hexagonal.domain.common.dto.ApiResponse<StudioSimpleUser> {
+//        return userUseCase.findStudioSimpleUser(id, user)
+//    }
 
     @Operation(summary = "회원 비밀번호 재설정")
     @ApiResponses(
@@ -143,53 +138,53 @@ class UserController(
         return userUseCase.updateUserPassword(request)
     }
 
-    /**
-     * 회원 탈퇴
-     */
-    @Operation(summary = "회원 탈퇴")
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "200",
-            ),
-            ApiResponse(
-                responseCode = "422",
-                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
-            ),
-            ApiResponse(
-                responseCode = "500",
-                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
-            ),
-        ],
-    )
-    @DeleteMapping("/user/withdrawal")
-    fun withdrawalWithReason(@Valid @RequestBody request: WithdrawalCommand, @LoginUser user: StudioSimpleUser): WithdrawalResult {
-        return WithdrawalResult(
-            result = userUseCase.withdrawalWithReason(request, user.id, user.email),
-        )
-    }
+//    /**
+//     * 회원 탈퇴
+//     */
+//    @Operation(summary = "회원 탈퇴")
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//            ),
+//            ApiResponse(
+//                responseCode = "422",
+//                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
+//            ),
+//            ApiResponse(
+//                responseCode = "500",
+//                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
+//            ),
+//        ],
+//    )
+//    @DeleteMapping("/user/withdrawal")
+//    fun withdrawalWithReason(@Valid @RequestBody request: WithdrawalCommand, @LoginUser user: StudioSimpleUser): WithdrawalResult {
+//        return WithdrawalResult(
+//            result = userUseCase.withdrawalWithReason(request, user.id, user.email),
+//        )
+//    }
 
-    @Operation(summary = "회원 수정")
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "200",
-            ),
-            ApiResponse(
-                responseCode = "422",
-                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
-            ),
-            ApiResponse(
-                responseCode = "500",
-                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
-            ),
-        ],
-    )
-    @PutMapping("/user")
-    fun updateUser(@RequestBody request: StudioUserModifyCommand, @LoginUser user: StudioSimpleUser):
-        com.hexagonal.domain.common.dto.ApiResponse<StudioSimpleUser> {
-        return userUseCase.updateStudioUser(request, user)
-    }
+//    @Operation(summary = "회원 수정")
+//    @ApiResponses(
+//        value = [
+//            ApiResponse(
+//                responseCode = "200",
+//            ),
+//            ApiResponse(
+//                responseCode = "422",
+//                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
+//            ),
+//            ApiResponse(
+//                responseCode = "500",
+//                content = [Content(schema = Schema(implementation = ErrorResponse::class))],
+//            ),
+//        ],
+//    )
+//    @PutMapping("/user")
+//    fun updateUser(@RequestBody request: StudioUserModifyCommand, @LoginUser user: StudioSimpleUser):
+//        com.hexagonal.domain.common.dto.ApiResponse<StudioSimpleUser> {
+//        return userUseCase.updateStudioUser(request, user)
+//    }
 
     @Operation(summary = "회원 가입 전 이메일 중복 여부 확인")
     @ApiResponses(

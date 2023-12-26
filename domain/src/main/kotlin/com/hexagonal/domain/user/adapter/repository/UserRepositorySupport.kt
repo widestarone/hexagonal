@@ -1,11 +1,7 @@
 package com.hexagonal.domain.user.adapter.repository
 
-import com.hexagonal.domain.common.constant.IndustryType
-import com.hexagonal.domain.user.adapter.entity.SubscribePlanEntity
 import com.hexagonal.domain.user.adapter.entity.UserEntity
 import com.hexagonal.domain.user.application.port.out.UserListCommand
-import com.hexagonal.domain.user.application.port.out.UserSubscribeListCommand
-import com.hexagonal.domain.user.constant.SubscribePlanType
 import com.hexagonal.domain.user.constant.UserSortType
 import com.hexagonal.domain.user.constant.UserStatus
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
@@ -49,9 +45,6 @@ class UserRepositorySupport(
             where(userFirstName(command.userFirstName))
             where(userLastName(command.userLastName))
             where(email(command.email))
-            where(companyName(command.companyName))
-            where(nationCode(command.nationCode))
-            where(industryType(command.industryType))
             where(userStatus(command.userStatus))
             where(createdAt(command.startCreatedAt, command.endCreatedAt))
             where(lastLoginAt(command.startLastLoginAt, command.endLastLoginAt))
@@ -88,29 +81,29 @@ class UserRepositorySupport(
     /**
      * companyName으로 조회
      */
-    private fun WhereDsl.companyName(companyName: String?): PredicateSpec {
-        return and(
-            takeIf { companyName != null }?.let { column(UserEntity::companyName).like("%$companyName%") },
-        )
-    }
+//    private fun WhereDsl.companyName(companyName: String?): PredicateSpec {
+//        return and(
+//            takeIf { companyName != null }?.let { column(UserEntity::companyName).like("%$companyName%") },
+//        )
+//    }
 
     /**
      * nationCode로 조회
      */
-    private fun WhereDsl.nationCode(nationCode: String?): PredicateSpec {
-        return and(
-            takeIf { nationCode != null }?.let { column(UserEntity::nationCode).equal(nationCode!!) },
-        )
-    }
+//    private fun WhereDsl.nationCode(nationCode: String?): PredicateSpec {
+//        return and(
+//            takeIf { nationCode != null }?.let { column(UserEntity::nationCode).equal(nationCode!!) },
+//        )
+//    }
 
     /**
      * industryType 으로 조회
      */
-    private fun WhereDsl.industryType(industryType: IndustryType?): PredicateSpec {
-        return and(
-            takeIf { industryType != null }?.let { column(UserEntity::industryType).equal(industryType!!) },
-        )
-    }
+//    private fun WhereDsl.industryType(industryType: IndustryType?): PredicateSpec {
+//        return and(
+//            takeIf { industryType != null }?.let { column(UserEntity::industryType).equal(industryType!!) },
+//        )
+//    }
 
     /**
      * userStatus로 조회
@@ -139,59 +132,59 @@ class UserRepositorySupport(
         )
     }
 
-    fun findUserSubscribeList(
-        command: UserSubscribeListCommand,
-    ): Page<UserEntity> {
-        val sort = when (UserSortType.NONE == command.sortType) {
-            true -> Sort.by("id").descending()
-            else -> when (command.isDesc) {
-                true -> Sort.by(command.sortType.value).descending()
-                else -> Sort.by(command.sortType.value).ascending()
-            }
-        }
+//    fun findUserSubscribeList(
+//        command: UserSubscribeListCommand,
+//    ): Page<UserEntity> {
+//        val sort = when (UserSortType.NONE == command.sortType) {
+//            true -> Sort.by("id").descending()
+//            else -> when (command.isDesc) {
+//                true -> Sort.by(command.sortType.value).descending()
+//                else -> Sort.by(command.sortType.value).ascending()
+//            }
+//        }
+//
+//        val pageable = PageRequest.of(
+//            command.pageIndex - 1,
+//            command.pageSize,
+//            sort,
+//        )
+//
+//        return queryFactory.pageQuery(pageable) {
+//            selectDistinct(entity(UserEntity::class))
+//            from(entity(UserEntity::class))
+//            join(
+//                entity(UserEntity::class),
+//                entity(SubscribePlanEntity::class),
+//                Relation<UserEntity, SubscribePlanEntity>("subscribePlanEntity"),
+//                JoinType.INNER,
+//            )
+//            where(userFirstName(command.userFirstName))
+//            where(userLastName(command.userLastName))
+//            where(email(command.email))
+//            where(companyName(command.companyName))
+//            where(nationCode(command.nationCode))
+//            where(industryType(command.industryType))
+//            where(planType(command.planType))
+//            where(planModifiedAt(command.startPlanModifiedAt, command.endPlanModifiedAt))
+//            where(paidAt(command.startPaidAt, command.endPaidAt))
+//        }
+//    }
 
-        val pageable = PageRequest.of(
-            command.pageIndex - 1,
-            command.pageSize,
-            sort,
-        )
+//    private fun WhereDsl.planType(planType: SubscribePlanType?): PredicateSpec {
+//        return and(
+//            planType?.let { column(SubscribePlanEntity::planType).equal(planType) },
+//        )
+//    }
 
-        return queryFactory.pageQuery(pageable) {
-            selectDistinct(entity(UserEntity::class))
-            from(entity(UserEntity::class))
-            join(
-                entity(UserEntity::class),
-                entity(SubscribePlanEntity::class),
-                Relation<UserEntity, SubscribePlanEntity>("subscribePlanEntity"),
-                JoinType.INNER,
-            )
-            where(userFirstName(command.userFirstName))
-            where(userLastName(command.userLastName))
-            where(email(command.email))
-            where(companyName(command.companyName))
-            where(nationCode(command.nationCode))
-            where(industryType(command.industryType))
-            where(planType(command.planType))
-            where(planModifiedAt(command.startPlanModifiedAt, command.endPlanModifiedAt))
-            where(paidAt(command.startPaidAt, command.endPaidAt))
-        }
-    }
-
-    private fun WhereDsl.planType(planType: SubscribePlanType?): PredicateSpec {
-        return and(
-            planType?.let { column(SubscribePlanEntity::planType).equal(planType) },
-        )
-    }
-
-    private fun WhereDsl.planModifiedAt(startPlanModifiedAt: LocalDateTime?, endPlanModifiedAt: LocalDateTime?): PredicateSpec {
-        return and(
-            takeIf { startPlanModifiedAt != null && endPlanModifiedAt != null }?.let { column(SubscribePlanEntity::planModifiedAt).between(startPlanModifiedAt!!, endPlanModifiedAt!!) },
-        )
-    }
-
-    private fun WhereDsl.paidAt(startPaidAt: LocalDateTime?, endPaidAt: LocalDateTime?): PredicateSpec {
-        return and(
-            takeIf { startPaidAt != null && endPaidAt != null }?.let { column(SubscribePlanEntity::paidAt).between(startPaidAt!!, endPaidAt!!) },
-        )
-    }
+//    private fun WhereDsl.planModifiedAt(startPlanModifiedAt: LocalDateTime?, endPlanModifiedAt: LocalDateTime?): PredicateSpec {
+//        return and(
+//            takeIf { startPlanModifiedAt != null && endPlanModifiedAt != null }?.let { column(SubscribePlanEntity::planModifiedAt).between(startPlanModifiedAt!!, endPlanModifiedAt!!) },
+//        )
+//    }
+//
+//    private fun WhereDsl.paidAt(startPaidAt: LocalDateTime?, endPaidAt: LocalDateTime?): PredicateSpec {
+//        return and(
+//            takeIf { startPaidAt != null && endPaidAt != null }?.let { column(SubscribePlanEntity::paidAt).between(startPaidAt!!, endPaidAt!!) },
+//        )
+//    }
 }
